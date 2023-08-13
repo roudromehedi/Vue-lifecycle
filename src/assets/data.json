@@ -1,0 +1,21 @@
+{
+    "images": [
+        {
+            "id": 1,
+            "label": "1st Image",
+            "image":"https://images.unsplash.com/photo-1500964757637-c85e8a162699?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8b2NlYW4lMjBsYW5kc2NhcGV8ZW58MHx8MHx8fDA%3D&w=1000&q=80"
+          },
+      
+          {
+            "id": 2,
+            "label": "2nd Image",
+            "image":"https://helpx.adobe.com/content/dam/help/en/photoshop/using/convert-color-image-black-white/jcr_content/main-pars/before_and_after/image-before/Landscape-Color.jpg"
+          },
+          {
+            "id": 3,
+            "label": "3rd Image",
+            "image":"https://d150u0abw3r906.cloudfront.net/wp-content/uploads/2021/10/image2-2-1024x649.png"
+          }
+    ]
+}
+
