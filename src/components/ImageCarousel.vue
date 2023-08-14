@@ -1,146 +1,109 @@
-<template>
-  <div v-if="data.length == 0">No Images to show!</div>
-
-  <div
-    v-else
-    id="carouselExampleCaptions"
-    class="relative"
-    data-te-carousel-init
-    data-te-carousel-slide
-    style="max-width: 900px; min-width: 900px"
-  >
-    <!--Carousel indicators-->
-    <div
-      class="absolute bottom-0 left-0 right-0 z-[2] mx-[15%] mb-4 flex list-none justify-center p-0"
-      data-te-carousel-indicators
-    >
-      <button
-        v-for="image in data"
-        type="button"
-        data-te-target="#carouselExampleCaptions"
-        data-te-slide-to="0"
-        data-te-carousel-active
-        class="mx-[3px] box-content h-[3px] w-[30px] flex-initial cursor-pointer border-0 border-y-[10px] border-solid border-transparent bg-clip-padding p-0 -indent-[999px] transition-opacity duration-[600ms] ease-[cubic-bezier(0.25,0.1,0.25,1.0)] motion-reduce:transition-none"
-        aria-current="true"
-        :class="currentImage.id === image.id ? 'bg-blue-500' : 'bg-red-500'"
-        aria-label="Slide 1"
-        @click="currentImage = image"
-      ></button>
-    </div>
-
-    <!--Carousel items-->
-    <div
-      class="relative w-full overflow-hidden after:clear-both after:block after:content-['']"
-    >
-      <div
-        class="relative float-left -mr-[100%] w-full transition-transform duration-[600ms] ease-in-out motion-reduce:transition-none"
-        data-te-carousel-active
-        data-te-carousel-item
-        style="backface-visibility: hidden"
-      >
-        <img
-          :src="currentImage.image"
-          class="block w-900 h-600"
-          alt="..."
-          style="overflow: hidden; aspect-ratio: 16/9; object-fit: cover"
-        />
-        <div
-          class="absolute inset-x-[15%] bottom-5 hidden py-5 text-center text-white md:block"
-        >
-          <h5 class="text-xl">{{ currentImage.label }}</h5>
-          <p>Some representative placeholder content for the first slide.</p>
-        </div>
-      </div>
-    </div>
-
-    <!--Carousel controls - prev item-->
-    <button
-      class="absolute bottom-0 left-0 top-0 z-[1] flex w-[15%] items-center justify-center border-0 bg-none p-0 text-center text-white opacity-50 transition-opacity duration-150 ease-[cubic-bezier(0.25,0.1,0.25,1.0)] hover:text-white hover:no-underline hover:opacity-90 hover:outline-none focus:text-white focus:no-underline focus:opacity-90 focus:outline-none motion-reduce:transition-none"
-      type="button"
-      data-te-target="#carouselExampleCaptions"
-      data-te-slide="prev"
-      @click="changeImage('previous')"
-    >
-      <span class="inline-block h-8 w-8">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke-width="1.5"
-          stroke="currentColor"
-          class="h-6 w-6"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M15.75 19.5L8.25 12l7.5-7.5"
-          />
-        </svg>
-      </span>
-      <span
-        class="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]"
-        >Previous</span
-      >
-    </button>
-    <!--Carousel controls - next item-->
-    <button
-      class="absolute bottom-0 right-0 top-0 z-[1] flex w-[15%] items-center justify-center border-0 bg-none p-0 text-center text-white opacity-50 transition-opacity duration-150 ease-[cubic-bezier(0.25,0.1,0.25,1.0)] hover:text-white hover:no-underline hover:opacity-90 hover:outline-none focus:text-white focus:no-underline focus:opacity-90 focus:outline-none motion-reduce:transition-none"
-      type="button"
-      data-te-target="#carouselExampleCaptions"
-      data-te-slide="next"
-      @click="changeImage('next')"
-    >
-      <span class="inline-block h-8 w-8">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke-width="1.5"
-          stroke="currentColor"
-          class="h-6 w-6"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M8.25 4.5l7.5 7.5-7.5 7.5"
-          />
-        </svg>
-      </span>
-      <span
-        class="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]"
-        >Next</span
-      >
-    </button>
-  </div>
-</template>
-
 <script setup>
-import { onMounted, ref, onBeforeUnmount } from "vue";
-import images from "../assets/data.json";
+import { ref, reactive, onMounted, onBeforeUnmount, nextTick } from "vue";
 
-const data = ref([]);
-let currentIndex = 0;
-let currentImage = ref(null); // Initialize currentImage with null initially
+const items = ref([
+  {
+    title: "Echoes of Time: Memories that Inspire",
+    url: "https://images.unsplash.com/photo-1691859325266-5f812fcf81ff?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1975&q=80",
+  },
+  {
+    title: "Floral Haven: Bridging Hearts and Homes",
+    url: "https://images.unsplash.com/photo-1682685797742-42c9987a2c34?ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
+  },
+  {
+    title: "Life's Service: Navigating the Unknown",
+    url: "https://images.unsplash.com/photo-1682685797366-715d29e33f9d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
+  },
+  {
+    title: "Perseverance Across Eras: Finding Solace",
+    url: "https://plus.unsplash.com/premium_photo-1690446955129-7248ac32faaa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1179&q=80",
+  },
+]);
+
+let carousel = null;
 
 onMounted(() => {
-  data.value = images.images;
-  currentImage.value = data.value[0]; // Initialize currentImage with the first image from data
+  carousel = new Flickity("#carousel", {});
+  console.log("onMounted");
 });
 
 onBeforeUnmount(() => {
-  data.value = [];
-  console.log(data);
+  carousel.destroy();
+  console.log("Before Unmounted all data cleanup done");
 });
 
-const changeImage = (navigation) => {
-  if (navigation === "next") {
-    currentIndex = (currentIndex + 1) % data.value.length;
-  }
-  if (navigation === "previous") {
-    currentIndex = (currentIndex - 1 + data.value.length) % data.value.length;
-  }
-  currentImage.value = data.value[currentIndex]; // Update the currentImage using the new currentIndex
-};
-</script>
+let newItem = reactive({
+  title: "",
+  url: "",
+});
 
-<style lang="scss" scoped></style>
+function updateCarousel() {
+  items.value.push(newItem);
+  console.log(items);
+  carousel.destroy();
+
+  nextTick(() => {
+    carousel = new Flickity("#carousel", {});
+  });
+}
+</script>
+<template>
+  <form>
+    <div class="grid gap-6 mb-6 md:grid-cols-3">
+      <div>
+        <input
+          v-model="newItem.url"
+          type="text"
+          id="color-name"
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          required
+          placeholder="Image URL"
+        />
+      </div>
+      <div>
+        <input
+          v-model="newItem.title"
+          type="text"
+          id="color-name"
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          required
+          placeholder="Title"
+        />
+      </div>
+
+      <div>
+        <button
+          @click.prevent="updateCarousel()"
+          type="submit"
+          class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+        >
+          Add to Carousel
+        </button>
+      </div>
+    </div>
+  </form>
+  <div class="mx-auto items" id="carousel">
+    <div
+      class="item"
+      :style="`background-image:url(${item.url})`"
+      v-for="(item, index) in items"
+      :key="index"
+    >
+      <p class="pl-12 pr-12 pt-80 text-white font-bold">{{ item.title }}</p>
+    </div>
+  </div>
+</template>
+
+<style scoped>
+.items {
+  width: 1000px;
+  height: 400px;
+}
+
+.item {
+  width: 1000px;
+  height: 400px;
+  background-color: gray;
+  background-size: cover;
+}
+</style>
